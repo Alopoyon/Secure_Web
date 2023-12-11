@@ -8,7 +8,55 @@
                     </div>
                 </div>
                 <div v-else>
-                    <form @submit.prevent="loginSubmit">
+                    <form @submit.prevent="createAccount">
+                        <!-- Name -->
+                        <div class="mb-3 row">
+                            <div class="col">
+                                <div class="form-floating ">
+                                    <input 
+                                    type="text" 
+                                    class="form-control"
+                                    id="firstName"  
+                                    placeholder="First name" 
+                                    v-model="fName">
+                                    <label for="firstName">First name</label>
+                                </div>
+                                
+                            </div>
+
+                            <div class="col">
+                                <div class="form-floating ">
+                                    <input 
+                                        type="text" 
+                                        class="form-control"
+                                        id="lastName" 
+                                        placeholder="Last name" 
+                                        v-model="lName">
+                                        <label for="lastName">Last name</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="form-floating mb-3">
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                id="userName" 
+                                placeholder="Username"
+                                v-model="userName"
+                                @blur="validateUserName"
+                                :class="{'is-invalid': userNameTouched && !isValidUserName, 'is-valid':userNameTouched && isValidUserName}">
+
+                            <label for="userName">Username</label>
+
+                            <div 
+                                v-if=" userNameTouched && !isValidUserName" 
+                                class="invalid-feedback">
+                                Please enter a valid username.
+                            </div>
+                        </div>
+
                         <!-- Email -->
                         <div class="form-floating mb-3">
                             <input 
@@ -49,21 +97,12 @@
                             </div>
                         </div>
 
-                        <!-- SignedIn Checkbox -->
-                        <div class="mb-3 form-check">
-                            <input 
-                                type="checkbox" 
-                                class="form-check-input" 
-                                id="keepSignedIn">
-                            <label class="form-check-label" for="keepSignedIn">Keep me signed in</label>
-                        </div>
-
                         <!-- Submit -->
                         <button 
                             type="submit" 
                             class="btn btn-primary" 
                             :disabled="!isValidEmail || !isValidPassword" >
-                            Login
+                            SignUp
                         </button>
                     </form>
                 </div>
@@ -77,6 +116,12 @@
 export default{
     data(){
         return {
+            fName: '',
+            fNameisTouched: false,
+            lName: '',
+            lNameisTouched: false,
+            userName: '',
+            userNameisTouched: false,
             email: '',
             emailTouched: false,
             password: '',
@@ -85,6 +130,10 @@ export default{
         };
     },
     computed:{
+        isValidUserName(){
+            const usnRegex1 = /^\S+[@]\S+[.]\S{2,}$/;
+            return usnRegex1.test(this.userName);
+        },
         isValidEmail(){
             const emailRegex = /^\S+[@]\S+[.]\S{2,}$/;
             return emailRegex.test(this.email);
@@ -105,7 +154,7 @@ export default{
             if(this.isValidEmail && this.isValidPassword){
                 try{
                     this.loading = true;
-                    const response = await fetch('http://localhost:5000/loginSubmit',{
+                    const response = await fetch('http://localhost:5000/createAccount',{
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -118,7 +167,7 @@ export default{
                     const data = await response.json();
                     console.log('Server Response:',data);
                     if (response.ok){
-                        this.$router.push('/');
+                        this.$router.push('/login');
                     }
                     
                 } catch (error) {

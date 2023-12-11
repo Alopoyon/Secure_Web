@@ -3,7 +3,8 @@ import { createRouter,createWebHistory } from 'vue-router'
 
 const routeDef = [
     { name: 'Home', path: '/', componentName: 'Home' },
-    { name: 'Login', path: '/login', componentName: 'Login' }
+    { name: 'Login', path: '/login', componentName: 'Login' },
+    { name: 'Register', path: '/register', componentName: 'Register' }
   ]
 
 const routes = routeDef.map(function (def) {
