@@ -1,13 +1,54 @@
 const mysql = require('mysql');
+const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 
-const connection = mysql.createConnection({
-  host: 'localhost',     // Replace with your MySQL server host
-  user: 'root',          // Replace with your MySQL username
-  password: '',          // Replace with your MySQL password
-//   database: 'secureweb',   // Replace with your MySQL database name
-});
+// MYSQL SERVER CONFIG
+
+const dbConfig = {
+  host: 'localhost',     
+  user: 'root',          
+  password: '',            
+};
+
+// HELPER FUNCTIONS
+
+const SALTROUNDS = 10;
+
+function createUUID(){
+    return crypto.randomBytes(16).toString('hex')
+}
+
+const hashPassword = (plaintext) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(plaintext, SALTROUNDS, (err, hash) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(hash);
+      }
+    });
+  });
+};
+
+
+const validateUser = (plaintext, hashedText) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(plaintext, hashedText, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+
+// DATABASE CONFIG
 
 const DATABASE_NAME = 'secureweb';
+
+const connection = mysql.createConnection(dbConfig);
 
 connection.connect((err) => {
     if (err) {
@@ -18,6 +59,8 @@ connection.connect((err) => {
     console.log('Connected to MySQL database!');
 });
 
+// DATABASE CREATION 
+
 connection.query('CREATE DATABASE '+ DATABASE_NAME, (err, result) => {
     if (err) {
       console.error('Error creating database: ', err.sqlMessage);
@@ -27,6 +70,7 @@ connection.query('CREATE DATABASE '+ DATABASE_NAME, (err, result) => {
     console.log('Database created successfully!');
 });
 
+// DATABASE SELECTION
 
 connection.query('USE '+ DATABASE_NAME, (err, result) => {
     if (err) {
@@ -37,10 +81,12 @@ connection.query('USE '+ DATABASE_NAME, (err, result) => {
     console.log('Database selected successfully!');
 });
 
+// USER TABLE CREATION
+
 function createUsersTable() {
-    const sql = `
+    const SQL_USER_TABLE = `
     CREATE TABLE users (
-        id int(11) NOT NULL,
+        id int(32) NOT NULL,
         username varchar(60) NOT NULL,
         first_name varchar(60) NOT NULL,
         last_name varchar(60) NOT NULL,
@@ -52,7 +98,7 @@ function createUsersTable() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
     `;
   
-    connection.query(sql, (error) => {
+    connection.query(SQL_USER_TABLE, (error) => {
       if (error) {
         console.error('Error creating "users" table:', error.sqlMessage);
       } else {
@@ -61,12 +107,29 @@ function createUsersTable() {
     });
 }
 
+// USER ACCOUNT CREATION
+
 function addUser(username, first_name, last_name, email, password){
     const sql = `INSERT INTO users (id, username, first_name, last_name, email, password) VALUES (? ,? ,? ,? ,? ,? )`;
-    const values = [username, first_name, last_name, email, password];
+    const values = [createUUID(), username, first_name, last_name, email, password];
+    connection.query(sql, values, (error, results, fields) => {
+            console.log('error: ',error,'\n results: ',results,'\n fields: ',fields);
+            if (error) {
+            console.error('Error adding user:', error);
+            } else {
+            console.log('User added successfully');
+            }
+        });
 }
 
-createUsersTable()
+// console.log(hash('teset'));
+// createUsersTable()
+addUser(username='testUser1',
+        first_name='test',
+        last_name='user1',
+        email='testuser1@email.com',
+        password='P@ssw0rd123')
+
 module.exports = connection;
 
 // module.exports = { connection, createUsersTable };
