@@ -110,9 +110,9 @@ function createUsersTable() {
 // USER ACCOUNT CREATION
 
 function addUser(username, first_name, last_name, email, password){
-    const sql = `INSERT INTO users (id, username, first_name, last_name, email, password) VALUES (? ,? ,? ,? ,? ,? )`;
+    const SQL_ADD_USER = `INSERT INTO users (id, username, first_name, last_name, email, password) VALUES (? ,? ,? ,? ,? ,? );`;
     const values = [createUUID(), username, first_name, last_name, email, password];
-    connection.query(sql, values, (error, results, fields) => {
+    connection.query(SQL_ADD_USER, values, (error, results, fields) => {
             console.log('error: ',error,'\n results: ',results,'\n fields: ',fields);
             if (error) {
             console.error('Error adding user:', error);
@@ -120,6 +120,38 @@ function addUser(username, first_name, last_name, email, password){
             console.log('User added successfully');
             }
         });
+}
+
+
+// USER LOGIN
+
+function accountLogin(username='', email='', password){
+  
+  if (username.length==0){
+  const SQL_USER_EMAIL = `SELECT (id, username, email) FROM users WHERE email LIKE (?); `;
+  const u_mail = [email, password];
+  connection.query(SQL_USER_EMAIL, u_mail, (error, results, fields) => {
+          console.log('error: ',error,'\n results: ',results,'\n fields: ',fields);
+          if (error) {
+            console.error('Error logging in:', error);
+          } else {
+            console.log('User logged in successfully');
+            return results
+          }
+      });}
+
+  if (email.length==0){
+  const SQL_USER_NAME = `SELECT (id, username, email) FROM users WHERE username LIKE (?); `;
+  const u_name = [username, password];
+  connection.query(SQL_USER_NAME, u_name, (error, results, fields) => {
+          console.log('error: ',error,'\n results: ',results,'\n fields: ',fields);
+          if (error) {
+            console.error('Error logging in:', error);
+          } else {
+            console.log('User logged in successfully');
+            return results
+          }
+      });}
 }
 
 // console.log(hash('teset'));
