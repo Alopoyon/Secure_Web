@@ -104,6 +104,10 @@
                             :disabled="!isValidEmail || !isValidPassword" >
                             SignUp
                         </button>
+
+                        <div id="registerlink" class="form-text">
+                            Already have an account? <span><router-link class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" to="/login">Sign In</router-link></span>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -136,7 +140,12 @@ export default{
         },
         isValidEmail(){
             const emailRegex = /^\S+[@]\S+[.]\S{2,}$/;
-            return emailRegex.test(this.email);
+            let responseData;
+            fetch(`http://localhost:5000/checkItem/${this.email}`)
+                .then(response => response.text())
+                .then(data => {responseData=data;})
+                .catch(error => console.error('Error:', error));
+            return emailRegex.test(this.email) & responseData;
         },
         isValidPassword(){
             const passWordRegex = /^\S{8,}$/;

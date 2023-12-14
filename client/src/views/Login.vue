@@ -61,10 +61,14 @@
                         <!-- Submit -->
                         <button 
                             type="submit" 
-                            class="btn btn-primary" 
+                            class="btn btn-primary justify-content-center align-items-center" 
                             :disabled="!isValidEmail || !isValidPassword" >
                             Login
                         </button>
+
+                        <div id="registerlink" class="form-text">
+                            Don't have an account? <span><router-link class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" to="/register">Sign Up</router-link></span>
+                        </div>
                     </form>
                 </div>
             </div>

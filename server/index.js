@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 
+
 const app = express();
 const port = 5000;
 
@@ -19,6 +20,43 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.json({ message: 'Hello from the server!' });
+});
+
+
+// CHECK EMAILS
+
+const dummyEmails = [
+  "john.doe@example.com",
+  "jane.smith@example.com",
+  "bob.jones@example.com",
+  "alice.wonder@example.com",
+  "charlie.brown@example.com",
+  "emily.white@example.com",
+  "david.green@example.com",
+  "olivia.black@example.com",
+  "michael.grey@example.com",
+  "sophia.red@example.com",
+  "alex.baker@example.com",
+  "grace.parker@example.com",
+  "ryan.taylor@example.com",
+  "ella.carter@example.com",
+  "nathan.hill@example.com",
+  "lily.ross@example.com",
+  "samuel.evans@example.com",
+  "ava.cooper@example.com",
+  "liam.murray@example.com",
+  "zoey.ward@example.com"
+];
+
+
+app.get('/checkItem/:itemName', (req, res) => {
+  const itemName = req.params.itemName;
+
+  if (dummyEmails.includes(itemName)) {
+    res.send(true);
+  } else {
+    res.send(false);
+  }
 });
 
 app.post('/loginSubmit',async (req,res) => {
