@@ -66,7 +66,7 @@
                                 placeholder="name@example.com"
                                 v-model="email"
                                 @blur="validateEmail"
-                                :class="{'is-invalid': emailTouched && !isValidEmail, 'is-valid':emailTouched && isValidEmail}">
+                                :class="{'is-invalid': emailTouched && (!isValidEmail || emailExists), 'is-valid':emailTouched && (isValidEmail  &&  emailExists)}">
 
                             <label for="userEmail">Email address</label>
 
@@ -74,6 +74,11 @@
                                 v-if=" emailTouched && !isValidEmail" 
                                 class="invalid-feedback">
                                 Please enter a valid email address.
+                            </div>
+                            <div 
+                                v-if=" emailTouched && emailExists" 
+                                class="invalid-feedback">
+                                Account already exists.
                             </div>
                         </div>
 
@@ -86,7 +91,7 @@
                                 placeholder="Password"
                                 v-model="password"
                                 @blur="validatePassword"
-                                :class="{'is-invalid': passwordTouched && !isValidPassword, 'is-valid':passwordTouched && isValidPassword}">
+                                :class="{'is-invalid': passwordTouched && !isValidPassword , 'is-valid':passwordTouched && isValidPassword}">
 
                             <label for="userPassword">Password</label>
 
@@ -128,6 +133,7 @@ export default{
             userNameisTouched: false,
             email: '',
             emailTouched: false,
+            emailExists: false,
             password: '',
             passwordTouched: false,
             loading: false,
@@ -140,21 +146,30 @@ export default{
         },
         isValidEmail(){
             const emailRegex = /^\S+[@]\S+[.]\S{2,}$/;
-            let responseData;
-            fetch(`http://localhost:5000/checkItem/${this.email}`)
-                .then(response => response.text())
-                .then(data => {responseData=data;})
-                .catch(error => console.error('Error:', error));
-            return emailRegex.test(this.email) & responseData;
+            
+            return emailRegex.test(this.email) ;//& responseData;
         },
         isValidPassword(){
             const passWordRegex = /^\S{8,}$/;
             return passWordRegex.test(this.password);
         }
     },
+    watch: {
+        // Watch for changes in the itemToCheck and trigger the fetch
+        email: function(newVal) {
+        //   this.fetchData(newVal);
+        // console.log('newVal: ',newVal);
+        },
+      },
     methods: {
         validateEmail(){
             this.emailTouched = true;
+            fetch(`http://localhost:5000/checkItem/${this.email}`)
+                .then(response => response.text())
+                .then(data => {
+                    // console.log(!data);
+                    this.emailExists = data;})
+                .catch(error => console.error('Error:', error));
         },
         validatePassword(){
             this.passwordTouched = true;
@@ -190,6 +205,6 @@ export default{
             }
         },
     },
-    name: 'Login',
+    name: 'Register',
 };
 </script>

@@ -1,23 +1,50 @@
 import { createRouter,createWebHistory } from 'vue-router'
-// import Home from '../views/Home.vue'
+import StandardLayout from '@/layouts/StandardLayout.vue';
+import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
 
 const routeDef = [
-    { name: 'Home', path: '/', componentName: 'Home' },
-    { name: 'Login', path: '/login', componentName: 'Login' },
-    { name: 'Register', path: '/register', componentName: 'Register' }
-  ]
+    { 
+      name: 'Home', 
+      path: '/',
+      component: StandardLayout, 
+      children: {
+        path: '',
+        component: () => import('@/views/Home.vue'),
+      },
+      componentName: 'Home' },
+    { 
+      name: 'Login', 
+      path: '/login',
+      component: Login, 
+      componentName: 'Login' },
+    { 
+      name: 'Register', 
+      path: '/register',
+      component: Register, 
+      componentName: 'Register' }
+]
 
-const routes = routeDef.map(function (def) {
-    return {
-      name: def.name,
-      path: def.path,
-      component: () => import(`../views/${def.componentName}.vue`)
-    }
-  })
+  // path: '/custom-page',
+  // component: CustomLayout, // Use custom layout for this page
+  // children: [
+  //   {
+  //     path: '',
+  //     component: () => import('@/views/CustomPage.vue'),
+  //   },
+  // ],
+  
+// const routes = routeDef.map(function (def) {
+//     return {
+//       name: def.name,
+//       path: def.path,
+//       component: () => import(`../views/${def.componentName}.vue`)
+//     }
+//   })
 
   const router = createRouter({
     history:createWebHistory(),
-    routes,
+    routes: routeDef,
 })
 
 export default router;

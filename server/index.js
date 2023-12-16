@@ -51,7 +51,6 @@ const dummyEmails = [
 
 app.get('/checkItem/:itemName', (req, res) => {
   const itemName = req.params.itemName;
-
   if (dummyEmails.includes(itemName)) {
     res.send(true);
   } else {
