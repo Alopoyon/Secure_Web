@@ -1,17 +1,17 @@
-import { createRouter,createWebHistory } from 'vue-router'
+import { createRouter,createWebHistory } from 'vue-router';
 import StandardLayout from '@/layouts/StandardLayout.vue';
-import Login from '@/views/Login.vue'
-import Register from '@/views/Register.vue'
+import Login from '@/views/Login.vue';
+import Register from '@/views/Register.vue';
 
 const routeDef = [
     { 
       name: 'Home', 
       path: '/',
       component: StandardLayout, 
-      children: {
+      children: [{
         path: '',
         component: () => import('@/views/Home.vue'),
-      },
+      }],
       componentName: 'Home' },
     { 
       name: 'Login', 
