@@ -18,13 +18,13 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <router-link class="nav-link" to="/">Home</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <router-link class="nav-link" to="/about">About</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+                <router-link class="nav-link" to="/contacts">Contact</router-link>
               </li>
             </ul>
           </div>
@@ -34,6 +34,7 @@
   </template>
   
   <script>
+  import { RouterLink } from 'vue-router';
   export default {
     // Header component logic goes here
   };
