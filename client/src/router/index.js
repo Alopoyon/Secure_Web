@@ -7,7 +7,7 @@ const routeDef = [
     { 
       name: 'Main', 
       path: '/',
-      component: StandardLayout, 
+      component: () => import('@/layouts/StandardLayout.vue'), 
       children: [{
         name: 'Home',
         path: '',
@@ -22,7 +22,7 @@ const routeDef = [
         component: () => import('@/views/Contact.vue'),
       }
     ],
-      componentName: 'Home' },
+      componentName: 'Main' },
     { 
       name: 'Login', 
       path: '/login',

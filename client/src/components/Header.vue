@@ -3,7 +3,7 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-          <a class="navbar-brand" href="#">Your Logo</a>
+          <router-link class="navbar-brand" to="/">Your Logo</router-link>
           <button
             class="navbar-toggler"
             type="button"
