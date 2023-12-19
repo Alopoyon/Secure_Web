@@ -76,7 +76,7 @@
                                 Please enter a valid email address.
                             </div>
                             <div 
-                                v-if=" emailTouched && emailExists" 
+                                v-else-if=" emailTouched && emailExists" 
                                 class="invalid-feedback">
                                 Account already exists.
                             </div>

@@ -1,38 +1,47 @@
 import { createRouter,createWebHistory } from 'vue-router'
-import StandardLayout from '@/layouts/StandardLayout.vue';
-import Login from '@/views/Login.vue'
-import Register from '@/views/Register.vue'
 
 const routeDef = [
     { 
       name: 'Main', 
       path: '/',
       component: () => import('@/layouts/StandardLayout.vue'), 
-      children: [{
-        name: 'Home',
-        path: '',
-        component: () => import('@/views/Home.vue'),
-      }, {
-        name: 'About',
-        path: '/about',
-        component: () => import('@/views/About.vue'),
-      }, {
-        name: 'Contact',
-        path: '/contacts',
-        component: () => import('@/views/Contact.vue'),
-      }
-    ],
-      componentName: 'Main' },
+      children: [
+        {
+          name: 'Home',
+          path: '',
+          component: () => import('@/views/Home.vue'),
+        }, 
+        {
+          name: 'About',
+          path: '/about',
+          component: () => import('@/views/About.vue'),
+        }, 
+        {
+          name: 'Contact',
+          path: '/contacts',
+          component: () => import('@/views/Contact.vue'),
+        }
+      ],
+      componentName: 'Main' 
+    },
     { 
       name: 'Login', 
       path: '/login',
-      component: Login, 
-      componentName: 'Login' },
+      component: () => import('@/views/Login.vue'),
+      componentName: 'Login' 
+    },
     { 
       name: 'Register', 
       path: '/register',
-      component: Register, 
-      componentName: 'Register' }
+      component: () => import('@/views/Register.vue'),
+      componentName: 'Register' 
+    },
+    {
+      name: 'ToDo',
+      path: '/todo',
+      component: () => import('@/components/Todo.vue'),
+      componentName: 'ToDo'
+    }
 ]
 
   // path: '/custom-page',
