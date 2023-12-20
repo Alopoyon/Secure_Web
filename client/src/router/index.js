@@ -37,10 +37,10 @@ const routeDef = [
       componentName: 'Register' 
     },
     {
-      name: 'ToDo',
-      path: '/todo',
-      component: () => import('@/components/Todo.vue'),
-      componentName: 'ToDo'
+      name: 'Note',
+      path: '/note',
+      component: () => import('@/components/Note.vue'),
+      componentName: 'Note'
     }
 ]
 
