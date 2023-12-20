@@ -29,7 +29,7 @@
             <li 
             class="list-group-item d-flex justify-content-between align-items-start list-group-item-action"
             v-for="(list, index) in lists" :key="index">
-                <div class="fw-bold text-capitaliz">{{list.heading}} -- {{ list.id }}</div><hr class="mt-1 mb-1"/>
+                <div class="fw-bold text-capitaliz">{{list.heading}}</div><hr class="mt-1 mb-1"/>
                 
                 <div class="text-truncate " style="max-width: 500px;">
                     {{list.body}}
